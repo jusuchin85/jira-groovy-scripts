@@ -13,30 +13,25 @@
  *               the script will then automatically perform the process.
  **/
 
- import com.atlassian.jira.component.ComponentAccessor
- import com.atlassian.jira.issue.CustomFieldManager
- import com.atlassian.jira.issue.fields.CustomField
- import com.atlassian.jira.issue.IssueFactory
- import com.atlassian.jira.issue.IssueManager
- import com.atlassian.jira.issue.Issue
- import com.atlassian.jira.issue.link.IssueLink
- import com.atlassian.jira.issue.MutableIssue
- import com.atlassian.jira.issue.link.IssueLinkManager
- import com.atlassian.jira.project.ProjectManager
- import com.atlassian.jira.user.ApplicationUser
- import com.atlassian.jira.util.ImportUtils
- import com.atlassian.crowd.embedded.api.User
- import com.opensymphony.workflow.WorkflowContext
- import org.apache.log4j.Category
- import com.atlassian.jira.user.util.UserManager
- import com.atlassian.jira.project.Project
+import com.atlassian.jira.component.ComponentAccessor
+import com.atlassian.jira.issue.CustomFieldManager
+import com.atlassian.jira.issue.fields.CustomField
+import com.atlassian.jira.issue.IssueFactory
+import com.atlassian.jira.issue.IssueManager
+import com.atlassian.jira.issue.Issue
+import com.atlassian.jira.issue.link.IssueLink
+import com.atlassian.jira.issue.MutableIssue
+import com.atlassian.jira.issue.link.IssueLinkManager
+import com.atlassian.jira.project.ProjectManager
+import com.atlassian.jira.user.ApplicationUser
+import com.atlassian.jira.util.ImportUtils
+import com.atlassian.crowd.embedded.api.User
+import com.opensymphony.workflow.WorkflowContext
+import com.atlassian.jira.user.util.UserManager
+import com.atlassian.jira.project.Project
 
 // Global variables
 def requestTypeFieldName = "Request Type"
-
-// Logging variables
-Category infoLog = Category.getInstance("com.onresolve.jira.groovy.PostFunction")
-infoLog.setLevel(org.apache.log4j.Level.INFO)
 
 // Configurable section
 def bugIssueTypeID = "10008"
@@ -66,7 +61,7 @@ if (issue.getIssueType().getName().equalsIgnoreCase("Service Request")) {
 } /*else if (issue.getIssueType().getName().equalsIgnoreCase("Research")) {
     Project projectObj = projectMgr.getProjectObjByKey("IDG")
     currentUserObj = projectObj.getProjectLead()
-    infoLog.info "CURRENT USER: ${currentUserObj.getName()}"
+    log.info "CURRENT USER: ${currentUserObj.getName()}"
     newissue.setSummary (issue.getSummary())
     newissue.setProjectObject(projectObj)
     newissue.setIssueTypeId(taskIssueTypeID)
@@ -79,7 +74,7 @@ if (issue.getIssueType().getName().equalsIgnoreCase("Service Request")) {
     if (requestTypeCFValue.equalsIgnoreCase("Suggest an Enhancement")) {
         Project projectObj = projectMgr.getProjectObjByKey("IB")
         currentUserObj = projectObj.getProjectLead()
-        infoLog.info "CURRENT USER: ${currentUserObj.getName()}"
+        log.info "CURRENT USER: ${currentUserObj.getName()}"
         newissue.setSummary ("Enhancement: " + issue.getSummary())
         newissue.setProjectObject(projectObj)
         newissue.setIssueTypeId(taskIssueTypeID)
@@ -91,7 +86,7 @@ if (issue.getIssueType().getName().equalsIgnoreCase("Service Request")) {
     } else if (requestTypeCFValue.equalsIgnoreCase("Request a New Project")) {
         Project projectObj = projectMgr.getProjectObjByKey("IB")
         currentUserObj = projectObj.getProjectLead()
-        infoLog.info "CURRENT USER: ${currentUserObj.getName()}"
+        log.info "CURRENT USER: ${currentUserObj.getName()}"
         newissue.setSummary ("New Project: " + issue.getSummary())
         newissue.setProjectObject(projectObj)
         newissue.setIssueTypeId(taskIssueTypeID)
@@ -104,7 +99,7 @@ if (issue.getIssueType().getName().equalsIgnoreCase("Service Request")) {
 } else if (issue.getIssueType().getName().equalsIgnoreCase("Report")) {
     Project projectObj = projectMgr.getProjectObjByKey("IB")
     currentUserObj = projectObj.getProjectLead()
-    infoLog.info "CURRENT USER: ${currentUserObj.getName()}"
+    log.info "CURRENT USER: ${currentUserObj.getName()}"
     newissue.setSummary ("Report: " + issue.getSummary())
     newissue.setProjectObject(projectObj)
     newissue.setIssueTypeId(taskIssueTypeID)
@@ -117,7 +112,7 @@ if (issue.getIssueType().getName().equalsIgnoreCase("Service Request")) {
     if (requestTypeCFValue.equalsIgnoreCase("Data Update")) {
         Project projectObj = projectMgr.getProjectObjByKey("IB")
         currentUserObj = projectObj.getProjectLead()
-        infoLog.info "CURRENT USER: ${currentUserObj.getName()}"
+        log.info "CURRENT USER: ${currentUserObj.getName()}"
         newissue.setSummary ("Data Update: " + issue.getSummary())
         newissue.setProjectObject(projectObj)
         newissue.setIssueTypeId(taskIssueTypeID)
@@ -129,7 +124,7 @@ if (issue.getIssueType().getName().equalsIgnoreCase("Service Request")) {
     } else if (requestTypeCFValue.equalsIgnoreCase("Daily Merchandising Update")) {
         Project projectObj = projectMgr.getProjectObjByKey("EDU")
         currentUserObj = projectObj.getProjectLead()
-        infoLog.info "CURRENT USER: ${currentUserObj.getName()}"
+        log.info "CURRENT USER: ${currentUserObj.getName()}"
         newissue.setSummary (issue.getSummary())
         newissue.setProjectObject(projectObj)
         newissue.setIssueTypeId(taskIssueTypeID)
@@ -142,10 +137,10 @@ if (issue.getIssueType().getName().equalsIgnoreCase("Service Request")) {
 
 ComponentAccessor.getJiraAuthenticationContext().setLoggedInUser(currentUser)
 Map params = new HashMap();
-infoLog.info "NEWISSUE SUMMARY: ${newIssue.summary}"
+log.info "NEWISSUE SUMMARY: ${newIssue.summary}"
 params.put("issue", newIssue)
 Issue linkedTask = issueMgr.createIssueObject(currentUser, params)
-infoLog.info "Issue ${linkedTask.getKey()} created."
+log.info "Issue ${linkedTask.getKey()} created."
 
 // get the current list of outwards depends on links to get the sequence number
 IssueLinkManager linkMgr = ComponentAccessor.issueLinkManager
@@ -158,14 +153,14 @@ for (IssueLink link in linkMgr.getInwardLinks(sourceIssue.id)) {
 
 linkMgr = ComponentAccessor.issueLinkManager
 linkMgr.createIssueLink (newIssue.id, sourceIssue.id, Long.parseLong(linkNameID), Long.valueOf(sequence), currentUser)
-infoLog.info "Issue ${linkedTask.getKey()} created and linked with request ${sourceIssue.key}."
+log.info "Issue ${linkedTask.getKey()} created and linked with request ${sourceIssue.key}."
 ImportUtils.indexIssues = wasIndexing
 
 MutableIssue createNewIssue (ProjectManager projectMgr, String projectKey, MutableIssue sourceIssue, MutableIssue destinationIssue, ApplicationUser currentUser, String issueTypeId, String summary) {
     MutableIssue newIssue = destinationIssue
     Project projectObj = projectMgr.getProjectObjByKey(projectKey)
     currentUser = projectObj.getProjectLead()
-    infoLog.info "CURRENT USER: ${currentUser.getName()}"
+    log.info "CURRENT USER: ${currentUser.getName()}"
     newIssue.setSummary (summary + sourceIssue.getSummary())
     newIssue.setProjectObject(projectObj)
     newIssue.setIssueTypeId(issueTypeId)

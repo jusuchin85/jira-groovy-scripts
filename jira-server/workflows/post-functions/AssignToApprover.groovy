@@ -2,10 +2,6 @@ import com.atlassian.jira.bc.user.search.UserPickerSearchService
 import com.atlassian.jira.bc.user.search.UserSearchParams
 import com.atlassian.jira.component.ComponentAccessor
 import com.atlassian.jira.issue.CustomFieldManager
-import org.apache.log4j.Category
-
-def Category log = Category.getInstance("com.onresolve.jira.groovy.PostFunction");
-log.setLevel(org.apache.log4j.Level.DEBUG);
 
 CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager()
 def cf = customFieldManager.getCustomFieldObjectByName("Approver")
